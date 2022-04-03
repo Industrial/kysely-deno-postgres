@@ -1,6 +1,6 @@
 # Kysely Deno Postgres
 
-Connector for [Kysely](https://github.com/koskimas/kysely) with
+Connector for [Kysely](https://koskimas.github.io/kysely/index.html) with
 [deno-postgres](https://deno-postgres.com).
 
 ## Usage
