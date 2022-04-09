@@ -1,11 +1,5 @@
-import {
-  CompiledQuery,
-  DatabaseConnection,
-} from "https://esm.sh/kysely@0.17.1/dist/esm/index-nodeless.js";
-import {
-  PoolClient,
-  Transaction,
-} from "https://deno.land/x/postgres@v0.15.0/mod.ts";
+import { CompiledQuery, DatabaseConnection } from 'kysely';
+import { PoolClient, Transaction } from 'postgres';
 
 export class PostgreSQLDriverDatabaseConnection implements DatabaseConnection {
   client: PoolClient;

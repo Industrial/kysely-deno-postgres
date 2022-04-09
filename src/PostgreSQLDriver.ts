@@ -1,13 +1,10 @@
-import {
-  Driver,
-  TransactionSettings,
-} from 'https://esm.sh/kysely@0.17.1/dist/esm/index-nodeless.js';
+import { Driver, TransactionSettings } from 'kysely';
 import {
   ClientOptions,
   ConnectionString,
   Pool,
   TransactionOptions,
-} from 'https://deno.land/x/postgres@v0.15.0/mod.ts';
+} from 'postgres';
 
 import { PostgreSQLDriverDatabaseConnection } from './PostgreSQLDriverDatabaseConnection.ts';
 
