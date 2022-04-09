@@ -1,15 +1,15 @@
 import {
   Driver,
   TransactionSettings,
-} from "https://esm.sh/kysely@0.17.1/dist/esm/index-nodeless.js";
+} from 'https://esm.sh/kysely@0.17.1/dist/esm/index-nodeless.js';
 import {
   ClientOptions,
   ConnectionString,
   Pool,
   TransactionOptions,
-} from "https://deno.land/x/postgres@v0.15.0/mod.ts";
+} from 'https://deno.land/x/postgres@v0.15.0/mod.ts';
 
-import { PostgreSQLDriverDatabaseConnection } from "./PostgreSQLDriverDatabaseConnection.ts";
+import { PostgreSQLDriverDatabaseConnection } from './PostgreSQLDriverDatabaseConnection.ts';
 
 export type PostgreSQLDriverOptions = ClientOptions & {
   connectionString?: ConnectionString;
@@ -27,19 +27,19 @@ export class PostgreSQLDriver implements Driver {
   }
 
   private getIsolationLevel(
-    isolationlevel: TransactionSettings["isolationLevel"],
-  ): TransactionOptions["isolation_level"] {
-    switch (isolationlevel || "serializable") {
-      case "read committed":
-        return "read_committed";
-      case "repeatable read":
-        return "repeatable_read";
+    isolationlevel: TransactionSettings['isolationLevel'],
+  ): TransactionOptions['isolation_level'] {
+    switch (isolationlevel || 'serializable') {
+      case 'read committed':
+        return 'read_committed';
+      case 'repeatable read':
+        return 'repeatable_read';
       case undefined:
-      case "serializable":
-        return "serializable";
-      case "read uncommitted":
+      case 'serializable':
+        return 'serializable';
+      case 'read uncommitted':
       default:
-        throw new Error("Unsupported isolation level");
+        throw new Error('Unsupported isolation level');
     }
   }
 
@@ -54,7 +54,7 @@ export class PostgreSQLDriver implements Driver {
 
   async acquireConnection() {
     if (!this.pool) {
-      throw new Error("Driver not initialized");
+      throw new Error('Driver not initialized');
     }
 
     const client = await this.pool.connect();
@@ -67,7 +67,7 @@ export class PostgreSQLDriver implements Driver {
     settings: TransactionSettings,
   ) {
     connection.transaction = connection.client.createTransaction(
-      "TRANSACTION_NAME",
+      'TRANSACTION_NAME',
       {
         isolation_level: this.getIsolationLevel(settings.isolationLevel),
       },
