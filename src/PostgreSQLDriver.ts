@@ -78,7 +78,14 @@ export class PostgreSQLDriver implements Driver {
   }
 
   async rollbackTransaction(connection: PostgreSQLDriverDatabaseConnection) {
-    await connection.transaction?.rollback();
+    if (
+      connection.transaction &&
+      connection.client.session.current_transaction ===
+        connection.transaction.name
+    ) {
+      await connection.transaction.rollback();
+    }
+
     connection.transaction = null;
   }
 
