@@ -1,5 +1,4 @@
 {
-  "importMap": "importMap.json",
   "compilerOptions": {
     "lib": [
       "deno.window",

@@ -1,21 +1,15 @@
-import { Driver, TransactionSettings } from 'kysely';
-import {
-  ClientOptions,
-  ConnectionString,
-  Pool,
-  TransactionOptions,
-} from 'postgres';
+import { kysely, postgres } from '../deps.ts';
 
 import { PostgreSQLDriverDatabaseConnection } from './PostgreSQLDriverDatabaseConnection.ts';
 
-export type PostgreSQLDriverOptions = ClientOptions & {
-  connectionString?: ConnectionString;
+export type PostgreSQLDriverOptions = postgres.ClientOptions & {
+  connectionString?: postgres.ConnectionString;
 };
 
-export class PostgreSQLDriver implements Driver {
+export class PostgreSQLDriver implements kysely.Driver {
   options: PostgreSQLDriverOptions;
   poolSize: number;
-  pool: Pool | null;
+  pool: postgres.Pool | null;
 
   constructor(options: PostgreSQLDriverOptions, poolSize = 1) {
     this.options = options;
@@ -24,8 +18,8 @@ export class PostgreSQLDriver implements Driver {
   }
 
   private getIsolationLevel(
-    isolationlevel: TransactionSettings['isolationLevel'],
-  ): TransactionOptions['isolation_level'] {
+    isolationlevel: kysely.TransactionSettings['isolationLevel'],
+  ): postgres.TransactionOptions['isolation_level'] {
     switch (isolationlevel || 'serializable') {
       case 'read committed':
         return 'read_committed';
@@ -42,7 +36,7 @@ export class PostgreSQLDriver implements Driver {
 
   // deno-lint-ignore require-await
   async init() {
-    this.pool = new Pool(
+    this.pool = new postgres.Pool(
       this.options.connectionString || this.options,
       this.poolSize,
       true,
@@ -61,7 +55,7 @@ export class PostgreSQLDriver implements Driver {
 
   async beginTransaction(
     connection: PostgreSQLDriverDatabaseConnection,
-    settings: TransactionSettings,
+    settings: kysely.TransactionSettings,
   ) {
     connection.transaction = connection.client.createTransaction(
       'TRANSACTION_NAME',
